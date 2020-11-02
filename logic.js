@@ -1,5 +1,4 @@
 // Store our API endpoint inside queryUrl
-
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_month.geojson";
 
 // Perform a GET request to the query URL
@@ -8,84 +7,65 @@ d3.json(queryUrl, function(data) {
   createFeatures(data.features);
 });
 
-
-
 function createFeatures(earthquakeData) {
-
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) { 
+    let depth = feature.geometry.coordinates[2];
+    let magnitude=  feature.properties.mag;        
     layer.bindPopup("<h3>" + feature.properties.place +
-      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" + feature.properties.mag);
-
+      "</h3><hr><p>" + new Date(feature.properties.time) + "</p><p>Magnitude: " +magnitude+ "</p> <p>Depth (km): " +depth+"</p>", {maxWidth:"auto"});
 } 
-
-
-
-
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
+  // Thanks to https://codepen.io/dagmara223/pen/LWYNJO (apparently colors aren't colors, they are styles, b/c - who knows)
   var earthquakes = L.geoJSON(earthquakeData, {
-    onEachFeature: onEachFeature,
+    style: function(feature) {
+      let depth = feature.geometry.coordinates[2]; 
+      if (depth >= 90) {
+        return {
+          color: "red"
+        }; 
+      }
+      else if (depth >= 70) {
+        return {
+          color: "orangered"
+        };
+      } else if (depth >= 50) {
+        return {
+          color: "orange"
+        };
+      } else if (depth >= 30) {
+        return {
+          color: "yellow"
+        };
+      } else if (depth >= 10) {
+        return {
+          color: "gold"
+        };
+      } else {
+        return {
+          color: "green"
+        }
+      }
+    },
 
+    onEachFeature: onEachFeature,
     pointToLayer: function(feature, latlng) {
       return new L.CircleMarker(latlng, {
         radius: (2**(feature.properties.mag))/5, 
         fillOpacity: 0.85,
-        style: function(feature) {
-          var depth = feature.geometry[3];
-          if (depth >= 90) {
-            return { color: "red" }; 
-          } 
-          else if (depth >= 70) {
-            return { color: "orange" };
-          } 
-          else if (depth >= 50) {
-            return { color: "yellow" };
-          } 
-          else {
-            return { color: "green" };
-          }
-        },
+
       });
   },
-
-  // style: function(feature) {
-  //   var depth = feature.geometry[3];
-  //   if (depth >= 90) {
-  //     return { color: "red" }; 
-  //   } 
-  //   else if (depth >= 70) {
-  //     return { color: "orange" };
-  //   } 
-  //   else if (depth >= 50) {
-  //     return { color: "yellow" };
-  //   } 
-  //   else {
-  //     return { color: "green" };
-  //   }
-  // },
-
-
-
-
 
   });
 
   // Sending our earthquakes layer to the createMap function
   createMap(earthquakes);
 };
-
-
-
-
 function createMap(earthquakes) {
-
-
-
-  // Define streetmap and darkmap layers - added satellite layer
-
-  //FINALLY!!! a satellite layer that works!!!
+  // Define streetmap and satellite layers
     var satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     id: "mapbox/satellite-streets-v9",
@@ -104,20 +84,11 @@ function createMap(earthquakes) {
     accessToken: API_KEY
   });
 
-  var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    id: "dark-v10",
-    accessToken: API_KEY
-  });
-
   // Define a baseMaps object to hold our base layers
   var baseMaps = {
     "Satellite Map": satellitemap,
     "Street Map": streetmap,
-    "Dark Map": darkmap
   };
-
 
   // Create overlay object to hold our overlay layer
   var overlayMaps = {
@@ -127,18 +98,14 @@ function createMap(earthquakes) {
   // Create our map, giving it the satellite, streetmap, and earthquakes layers to display on load
   var myMap = L.map("map", {
     center: [
-      37.09, -95.71
+      28, -115
     ],
-    zoom: 5,
-    layers: [satellitemap, streetmap, darkmap, earthquakes]
+    zoom: 3,
+    layers: [satellitemap, streetmap, earthquakes]
   });
 
-  // Create a layer control
-  // Pass in our baseMaps and overlayMaps
-  // Add the layer control to the map
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
 
 }
-

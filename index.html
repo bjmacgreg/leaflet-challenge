@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Leaflet_1_w_class_starter</title>
+  <title>Earthquakes</title>
 
   <!-- Leaflet CSS -->
   <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -27,7 +27,23 @@
 
 <body>
   <!-- The div where we will inject our map -->
-  <div id="map"></div>
+  <!-- Thanks http://132.72.155.230:3838/js/symbology-and-interactivity.html#adding-a-legend -->
+  <div id="map">
+    <div class="leaflet-top leaflet-right">
+      <div class="legend leaflet-control">
+      <b>Earthquake depth</b><br>(km)<br>
+        <i style="background-color: #f70303"></i>>=90<br>
+        <i style="background-color: #f36a34"></i>70 to 90<br>
+        <i style="background-color: #fcbb59"></i>50 to 70<br>
+        <i style="background-color: #e1f100"></i>30 to 50<br>
+        <i style="background-color: #98f306"></i>10 to 30<br>
+        <i style="background-color: #08b310"></i>less than 10<br>        
+        <small><br><b>Earthquake magnitudes </b>are shown as circles<br> 
+          with radius as 2^magnitude. Magnitudes are<br>actually exponents of ten; this compromise<br>shows more variation than a linear scale but<br>lets small circles
+        be visible while large ones<br>still fit on the page.</small>
+      </div>
+    </div>
+  </div>
 
   <!-- Leaflet JS -->
   <!-- <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
