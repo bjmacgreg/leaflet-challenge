@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Earthquakes</title>
+  <title>Earthquakes, last 30 days, mag. >= 4.5</title>
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
+    crossorigin="" />
 
-  <!-- D3 JavaScript: this is from homework starter code, so far it breaks this example -->
+  <!-- D3 JavaScript: this is from homework starter code, but it breaks this example -->
   <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
 
   <!--D3 cdn: Original class example version, works so far-->
@@ -27,16 +28,21 @@
   <div id="map">
     <div class="leaflet-top leaflet-right">
       <div class="legend leaflet-control">
-      <b>Earthquake depth</b><br>(km)<br>
-        <i style="background-color: red"></i>>=90<br>      
+        <b>Earthquake depth</b><br><br>
+        <i style="background-color: brown"></i>>=150 km<br>
+        <i style="background-color: red"></i>90 to 150<br>
         <i style="background-color: orangered"></i>70 to 90<br>
         <i style="background-color: orange"></i>50 to 70<br>
         <i style="background-color: yellow"></i>30 to 50<br>
-        <i style="background-color: yellowgreen"></i>10 to 30<br>
-        <i style="background-color: green"></i>less than 10<br>        
-        <small><br><b>Earthquake magnitudes </b>are shown as circles, <br> 
-          with radius as 2^magnitude. Magnitudes are<br>actually exponents of ten; this compromise<br>shows more variation than a linear scale but<br>lets small circles
-        be visible while large ones<br>still fit on the page. So far.</small>
+        <i style="background-color: greenyellow"></i>10 to 30<br>
+        <i style="background-color: green"></i>less than 10<br>
+        <br><b>Earthquake magnitudes </b>are shown as circles, <br>
+        with radius as 2^magnitude. Magnitudes are<br>actually exponents of ten; this compromise<br>shows more variation
+        than a linear scale but<br>lets small circles
+        be visible while large ones<br>still fit on the page. So far.<br>
+        <br><b>Tectonic plate boundaries </b>(magenta) from <br>
+        <a href="https://github.com/fraxen/tectonicplates">https://github.com/fraxen/tectonicplates</a>, with <br>data
+        from Hugo Ahlenius, Nordpil, and Peter Bird. <br><br><b>Click on earthquakes</b> for details of time,<br> location, and magnitude.</b>
       </div>
     </div>
   </div>
@@ -45,10 +51,11 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
-  
+
   <!-- API key -->
   <script type="text/javascript" src="static/config.js"></script>
   <!-- Our JS -->
   <script type="text/javascript" src="static/logic.js"></script>
 </body>
+
 </html>
